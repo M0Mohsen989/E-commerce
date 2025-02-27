@@ -100,7 +100,7 @@
     
                         <div class="mt-4">
                            
-                            <span> <i (click)="aDDtoWishList(product._id)" class="text-2xl cursor-pointer fa fa-heart "></i></span> <button (click)="addTOcart(product._id)" class=" btn-main w-3/4  mx-auto block"> add to cart</button> 
+                            <span> <i (click)="aDDtoWishList(product._id)" [class]="favoriteProducts[product._id] ? 'heart-red' : 'heart-black'" (click)="toggleFavorite(product._id)"  class="text-2xl cursor-pointer fa fa-heart "></i></span> <button (click)="addTOcart(product._id)" class=" btn-main w-3/4  mx-auto block"> add to cart</button> 
                         </div>
     
     

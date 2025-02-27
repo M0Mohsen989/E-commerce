@@ -146,6 +146,22 @@ slide: any;
 })
  }
 
+ favoriteProducts: { [key: string]: boolean } = {}; // تخزين حالة كل منتج
+
+  toggleFavorite(productId: string) {
+    // إذا لم يكن المنتج موجودًا في القائمة، نضيفه بحالة افتراضية `false`
+    if (!(productId in this.favoriteProducts)) {
+      this.favoriteProducts[productId] = false;
+    }
+
+    // عكس قيمة المفضلة للمنتج
+    this.favoriteProducts[productId] = !this.favoriteProducts[productId];
+
+    // إجبار Angular على التعرف على التغيير
+    this.favoriteProducts = { ...this.favoriteProducts };
+    console.log(this.favoriteProducts); // تحقق من القيم في الـ Console
+  }
+ 
 
  
     ngOnDestroy(): void {
