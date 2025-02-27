@@ -1,0 +1,113 @@
+<!-- main static slider section  -->
+<section class=" p-8 my-5">
+    <div class="container  w[85%] mx-auto">
+
+        <div class="flex flex-wrap ">
+            <div class="w-full sm:w-full md:w-1/2 lg:w-3/4">
+                <owl-carousel-o [options]="MainStaticSliderOptions">
+                    <ng-template carouselSlide>
+                        <img src="./images/img1.avif" class="h-80" alt="">
+                    </ng-template>  
+                    <ng-template carouselSlide>
+                        <img src="./images/img2.avif"  class="h-80" alt="">
+                    </ng-template> 
+                    <ng-template carouselSlide>
+                        <img src="./images/img3.avif"  class="h-80" alt="">
+                    </ng-template> 
+                    <ng-template carouselSlide>
+                        <img src="./images/img4.avif"  class="h-80" alt="">
+                    </ng-template> 
+                    <ng-template carouselSlide>
+                        <img src="./images/img5.avif" class="h-80"  alt="">
+                    </ng-template> 
+                    <ng-template carouselSlide>
+                        <img src="./images/img6.avif" class="h-80"  alt="">
+                    </ng-template> 
+                    <ng-template carouselSlide>
+                        <img src="./images/img7.avif" class="h-80"  alt="">
+                    </ng-template> 
+                 
+                  </owl-carousel-o>
+            </div>
+            <div class="w-full sm:w-full md:w-1/2 lg:w-1/4">
+               <img src="./images/grocery-banner-2.jpeg" class="h-40" alt="">
+               <img src="./images/grocery-banner.png"class="h-40" alt="">
+
+        </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+@if (productData != null && CategoryData != null) {
+    <!-- categories section -->
+    
+    <section class=" p-8 my-5"> 
+    
+        <div class="container w[85%] mx-auto">
+    
+            <h1 class="text-center font-bold py-5  shadow-xl text-2xl">all categories :</h1>
+        
+            <owl-carousel-o [options]="customOptions">
+                    @for( category of CategoryData; track category._id) {
+        
+                        <ng-template carouselSlide>
+                              <img [src]="category.image" class="w-full h-[250px] "  [alt]=" category.name "> 
+                       </ng-template>
+                    }
+            
+              </owl-carousel-o>
+        </div>
+    
+          
+    </section>
+    
+    
+    
+    
+    
+    <!-- products section -->
+    <section class=" rounded p-4 my-5">
+        <input [(ngModel)]="searchValue" type="text" class="w-[40%] mx-auto block p-2 border-2 border-gray-300 rounded" placeholder="search products">
+    
+        <h1 class="text-center font-bold py-5  shadow-xl text-2xl">all products :</h1>
+    
+    
+        <div class="container w-[90%] mx-auto">
+    
+              <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                @for (product of productData.slice(0,40)|search:searchValue; track product._id) {
+                    
+                    <div class="product cursor-pointer p-4" >
+                       <div [routerLink]="[ '/product-details',product._id]">
+
+                           <div class="mt-4">
+                               <img [src]="product.imageCover" [alt]="product.title">
+                           </div>
+                           <div class="mt-4">
+                               <h2 class="text-main">{{ product.category.name }}</h2>
+                               <h1 class="font-black">{{product.title.split('').slice(0,6).join('')}}</h1>
+                           </div>
+                           <div class="mt-4 flex flex-wrap justify-between">
+                               <h3>{{product.price}}</h3>
+                             
+                                  <span><i class="rating-color fa-solid fa-star"></i> {{product.ratingsAverage}}</span>
+                             
+                           </div>
+                       </div>
+    
+                        <div class="mt-4">
+                           
+                            <span> <i (click)="aDDtoWishList(product._id)" class="text-2xl cursor-pointer fa fa-heart "></i></span> <button (click)="addTOcart(product._id)" class=" btn-main w-3/4  mx-auto block"> add to cart</button> 
+                        </div>
+    
+    
+                    </div>
+                }
+              </div>
+        </div>
+    
+    </section>
+} 

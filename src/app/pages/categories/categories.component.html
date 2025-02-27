@@ -1,0 +1,18 @@
+<section class="rounded-xl p-4 my-5">
+    <div class="container w-[90%] mx-auto">
+        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+            @for (category of CategoryData; track category._id) {
+                <div class="product cursor-pointer  p-4 border h-full flex flex-col items-center">
+                    <div class="w-full">
+                        <div class="mt-4 w-full aspect-square overflow-hidden">
+                            <img [src]="category.image" class="w-full h-full rounded-md  object-cover" [alt]="category.name">
+                        </div>
+                        <div class="mt-4 text-center">
+                            <h1 class="font-black text-emerald-800 text-2xl">{{category.name}}</h1>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

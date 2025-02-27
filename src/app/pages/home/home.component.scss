@@ -1,0 +1,15 @@
+.product{
+
+
+            button{
+                transform: translateY(150%);
+                transition: transform 0.3s;
+            }
+
+            &:hover{
+                button{
+                    transform: translateY(0%);
+                }
+            }
+
+    }

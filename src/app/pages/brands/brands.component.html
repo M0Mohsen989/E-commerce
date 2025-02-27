@@ -1,0 +1,60 @@
+<section class="rounded p-4 my-5">
+
+    <h1 class="text-center font-bold py-5  text-green-500 text-4xl">All Brands</h1>
+
+
+        
+    <div class="container w-[90%] mx-auto">
+    
+        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        
+
+    @for (brands of brandsData; track brands._id) {
+
+
+        <div class="product cursor-pointer p-4 border" >
+
+            <!-- [routerLink]="[ '/product-details',product._id]" -->
+            <div>
+
+                <div class="mt-4">
+                    <img [src]="brands.image" [alt]="brands.name">
+                </div>
+                <div class="mt-4 text-center">
+                    <h1 class="font-black">{{brands.name}}</h1>
+                </div>
+               
+            </div>
+
+
+
+         </div>
+
+    }
+
+
+                
+                
+
+        </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>

@@ -1,0 +1,36 @@
+
+@if (Productdetails!=null) {
+
+    <section class="rounded p-4 my-5">
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 ">
+    
+        <div class="product-slider p-5 ">
+    <!-- <img src="{{Productdetails.imageCover}}"  class="w-[65%] " alt="{{Productdetails.title}}"> -->
+    <owl-carousel-o [options]="ProductDetailsOptions">
+        @for( imgs of Productdetails.images ; track $index ) {
+    
+            <ng-template carouselSlide>
+                  <img [src]="imgs" class="w-full object-contain h-[400px] "  [alt]="  "> 
+           </ng-template>
+        }
+    
+    </owl-carousel-o>
+        </div>
+        <div class="product-details content-center">
+    <h1 class="to-black font-bold ">{{Productdetails.title}}</h1>
+     <p>{{Productdetails.description}}</p>
+     <h3>{{Productdetails.category.name}}</h3>
+     <div class="mt-4 flex flex-wrap justify-between">
+        <h3>{{Productdetails.price}}</h3>
+        <span><i class="rating-color fa-solid fa-star"></i> {{Productdetails.ratingsAverage}}</span>
+    </div>
+    
+    <div class="mt-4">
+        <button (click)="addTOcart()" class="btn-main w-full block"> add to cart</button>
+    </div>  
+    
+        </div>
+    </div>
+    
+    </section>
+}  
