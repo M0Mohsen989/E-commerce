@@ -12,7 +12,7 @@ export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
      provideRouter(routes, withViewTransitions(),withHashLocation())
     , provideClientHydration(withEventReplay()), 
-    provideHttpClient(withFetch(),withInterceptors([loadingInterceptor]))
+    provideHttpClient(withFetch())
     // withInterceptors([loadingInterceptor])
     ,
     importProvidersFrom(BrowserAnimationsModule ,NgxSpinnerModule),
