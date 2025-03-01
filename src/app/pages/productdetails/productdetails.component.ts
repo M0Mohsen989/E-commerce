@@ -70,6 +70,8 @@ addTOcart(){
     next:(res)=>{
       console.log(res);
       this._ToastrService.success(res.message)
+      this._CartService.cartCount.next(res.numOfCartItems)
+
     },
     error:(err)=>{
       console.log(err);

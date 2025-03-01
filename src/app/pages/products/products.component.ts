@@ -19,7 +19,8 @@ export class ProductsComponent implements OnInit , OnDestroy {
 
   searchValue:string =''
   productData!:IProduct[]
-    
+  wishlistProducts: string[] = []; // لحفظ المنتجات المضافة إلى wishlist
+
   productUsub!: Subscription
   addToUSERCartsub!: Subscription
   aDDtoWishlistsub!: Subscription
@@ -28,17 +29,39 @@ export class ProductsComponent implements OnInit , OnDestroy {
 
 
   ngOnInit(): void {  
-   this.productUsub= this.productUsub = this._ProductService.getAllproducts().subscribe({
-        next: (res) => {
-            this.productData = res.data;
-            console.log(this.productData);
-        },
-        error: (error) => {
-            console.log(error);
-        }
+   // تحميل جميع المنتجات
+   this.productUsub = this._ProductService.getAllproducts().subscribe({
+    next: (res) => {
+      this.productData = res.data.map((product: any) => ({
+        ...product,
+        select: false // إضافة الخاصية بشكل افتراضي
+      }));
+      this.loadWishlist();// تحميل قائمة الـ wishlist بعد جلب المنتجات
+    },
+    error: (error) => {
+      console.log(error);
+    }
+  });
+  }
+  
+
+    
+  // تحميل المنتجات الموجودة في الـ wishlist
+  loadWishlist() {
+    this._WishlistService.GetAllUserWishList().subscribe({
+      next: (res) => {
+        this.wishlistProducts = res.data.map((item: any) => item._id);
+        this.productData.forEach((product) => {
+          product.select = this.wishlistProducts.includes(product._id);
+        });
+      },
+      error: (err) => {
+        console.log(err);
+      }
     });
   }
   
+
 
     addTOcart(p_ID:string){
     this.addToUSERCartsub=  this._CartService.addToUSERCart(p_ID).subscribe({
@@ -56,19 +79,36 @@ export class ProductsComponent implements OnInit , OnDestroy {
     }
 
 
-    
-    aDDtoWishList(p_ID:string){
-    this.aDDtoWishlistsub=  this._WishlistService.aDDtoWishlist(p_ID).subscribe({
-        next:(res)=>{
-          console.log(res);
-          this._ToastrService.success(res.message)
-      
-        },error:(err)=>{
-          console.log(err);
-          
+  
+  // إضافة وإزالة المنتجات من الـ wishlist
+  aDDtoWishList(p_ID: string, product: any) {
+    this._WishlistService.aDDtoWishlist(p_ID).subscribe({
+      next: (res) => {
+        this._ToastrService.success(res.message);
+
+        // تحديث حالة المنتج وإضافته/إزالته من القائمة
+        if (!product.select) {
+          this.wishlistProducts.push(p_ID);
+        } else {
+          this.wishlistProducts = this.wishlistProducts.filter(id => id !== p_ID);
         }
-      })
-          }
+        product.select = !product.select; // تحديث اللون في الواجهة
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+
+
+
+
+
+
+
+
+
           ngOnDestroy(): void {
             if (this.productUsub) {
               this.productUsub.unsubscribe();

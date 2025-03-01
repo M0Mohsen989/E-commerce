@@ -13,90 +13,74 @@ import { Subscription } from 'rxjs';
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.scss'
 })
-export class WishlistComponent implements OnInit ,OnDestroy {
+export class WishlistComponent implements OnInit, OnDestroy {
+  private readonly _WishlistService = inject(WishlistService);
+  private readonly _ToastrService = inject(ToastrService);
+  private readonly _CartService = inject(CartService);
 
-private readonly _WishlistService  = inject(WishlistService)
-private readonly _ToastrService  = inject(ToastrService)
-private readonly _CartService  = inject(CartService)
+  wishListData!: IWsihlist;
+  cartCount!: number;  // عدد العناصر في السلة
+  GetAllUserWishListSUB!: Subscription;
+  reMOveProducttSUB!: Subscription;
+  addToUSERCartSUB!: Subscription;
+  refreshWishlistsub!: Subscription;
 
+  ngOnInit(): void {
+    this.GetAllUserWishListSUB = this._WishlistService.GetAllUserWishList().subscribe({
+      next: (res) => {
+        this.wishListData = res;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
 
-  wishListData!:IWsihlist 
+    // الاشتراك في cartCount لمتابعة التغييرات في عدد العناصر في السلة
+    this._CartService.cartCount.subscribe(count => {
+      this.cartCount = count;
+    });
+  }
 
-  GetAllUserWishListSUB!:Subscription 
-  reMOveProducttSUB!:Subscription 
-  addToUSERCartSUB!:Subscription 
-  refreshWishlistsub!:Subscription 
+  removeProduct(p_ID: string) {
+    this.reMOveProducttSUB = this._WishlistService.reMOveProduct(p_ID).subscribe({
+      next: (res) => {
+        this._ToastrService.success('Product removed successfully');
+        this.refreshWishlist();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
 
-ngOnInit(): void {
+  addTOCart(p_ID: string) {
+    this.addToUSERCartSUB = this._CartService.addToUSERCart(p_ID).subscribe({
+      next: (res) => {
+        this._CartService.cartCount.next(res.numOfCartItems)
+        this._ToastrService.success(res.message);
+        this.removeProduct(p_ID);  // حذف المنتج من الـ wishlist بعد إضافته للعربة
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
 
-  this.GetAllUserWishListSUB= this._WishlistService.GetAllUserWishList().subscribe({
-    next:(res)=>{
-      console.log(res.data);
-      this.wishListData= res
-      
-    },error:(err)=>{
-      console.log(err);
-      
-    }
+  refreshWishlist() {
+    this.refreshWishlistsub = this._WishlistService.GetAllUserWishList().subscribe({
+      next: (res) => {
+        this.wishListData = res;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
 
-  })
-  
-}
-
-
-
-removeProduct(p_ID:string) {
-  this.reMOveProducttSUB= this._WishlistService.reMOveProduct(p_ID).subscribe({
-    next: (res) => {
-      console.log(res);
-      this._ToastrService.success('Product removed successfully');
-      
-      // تحديث البيانات بعد الحذف
-      this.refreshWishlist();
-    },
-    error: (err) => {
-      console.log(err);
-    }
-  });
-}
-
-addTOCart(p_ID:string) {
-  this.addToUSERCartSUB= this._CartService.addToUSERCart(p_ID).subscribe({
-    next: (res) => {
-      console.log(res);
-      this._ToastrService.success(res.message);
-
-      // حذف المنتج من الـ wishlist بعد إضافته للعربة
-      this.removeProduct(p_ID);
-    },
-    error: (err) => {
-      console.log(err);
-    }
-  });
-}
-
-// تحديث البيانات
-refreshWishlist() {
- this.refreshWishlistsub= this._WishlistService.GetAllUserWishList().subscribe({
-    next: (res) => {
-      this.wishListData = res;  // تحديث البيانات بعد أي تغيير
-    },
-    error: (err) => {
-      console.log(err);
-    }
-  });
-}
-
-  
- 
-
-
-ngOnDestroy(): void {
- if (this.GetAllUserWishListSUB) this.GetAllUserWishListSUB.unsubscribe();
- if (this.reMOveProducttSUB) this.reMOveProducttSUB.unsubscribe();  
-  if (this.addToUSERCartSUB) this.addToUSERCartSUB.unsubscribe();
-  if (this.refreshWishlistsub) this.refreshWishlistsub.unsubscribe();
-}
-
-
+  ngOnDestroy(): void {
+    if (this.GetAllUserWishListSUB) this.GetAllUserWishListSUB.unsubscribe();
+    if (this.reMOveProducttSUB) this.reMOveProducttSUB.unsubscribe();
+    if (this.addToUSERCartSUB) this.addToUSERCartSUB.unsubscribe();
+    if (this.refreshWishlistsub) this.refreshWishlistsub.unsubscribe();
+  }
 }

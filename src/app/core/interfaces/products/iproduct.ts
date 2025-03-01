@@ -1,6 +1,7 @@
 
 
 export interface IProduct {
+    select: boolean
     sold: number
     images: string[]
     subcategory: Subcategory[]

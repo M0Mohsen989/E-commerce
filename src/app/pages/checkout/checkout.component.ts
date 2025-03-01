@@ -53,12 +53,6 @@ export class CheckoutComponent implements OnInit{
     }
     
 
-    // getUserAllOrders(){
-    //   this._PaymentService.getUserOrders(this.CartID).subscribe({
-    //     next:(res)=>{
-    //       console.log(res);
-    //     }
-    //   })
-    // }
+   
 
 }

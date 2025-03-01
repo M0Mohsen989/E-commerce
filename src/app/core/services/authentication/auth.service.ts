@@ -11,11 +11,14 @@ import e from 'express';
 export class AuthService {
 
   constructor(private _HttpClient:HttpClient) { }
+
+  userId!:string
 userInoTO!:any 
     // usertokenDecode(token:string):any{}
     decodeToken(){
       if(sessionStorage.getItem('token')){
        this.userInoTO = jwtDecode(sessionStorage.getItem('token') !)
+       this.userId = this.userInoTO.id
    }
     }
 

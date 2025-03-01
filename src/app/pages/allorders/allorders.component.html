@@ -1,1 +1,111 @@
-<p>allorders works!</p>
+<!-- @if (allOrdersData != null) {
+    <section class="bg-slate-100 w-10/12 md:mx-auto mt-20 p-6 my-6 rounded-lg">
+
+        <div class="p-7">
+            <div class="flex justify-between">
+                <h1 class="font-black text-3xl">Thank You For Using Our Site</h1>
+                <button [routerLink]="'/home'" type="button"
+                    class="px-5 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Home
+                </button>
+            </div>
+        </div>
+
+        <div class="container w-[90%] py-6 mx-auto">
+            @for (order of allOrdersData; track order._id) {
+                <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+                    
+                    <h2 class="font-bold text-xl text-gray-800">Order ID: {{ order._id }}</h2>
+                    <h3 class="text-lg text-gray-600">Total Price: <span class="text-main">{{ order.totalOrderPrice | currency:'GBP' }}</span></h3>
+                    <h3 class="text-lg text-gray-600">Order Date: {{ order.createdAt | date:'medium' }}</h3>
+
+                    <div class="border-t border-gray-300 my-4"></div>
+
+                    @for (item of order.cartItems; track item.product._id) {
+                        <div class="flex flex-wrap justify-between items-center py-4">
+                            <div class="w-full sm:w-1/5">
+                                <img [src]="item.product.imageCover" class="w-full object-contain rounded-lg" alt="">
+                            </div>
+
+                            <div class="w-full sm:w-1/2">
+                                <h1 class="font-bold text-lg">{{ item.product.title }}</h1>
+                                <h2 class="text-gray-700 my-2">{{ item.price | currency:'GBP' }}</h2>
+                            </div>
+
+                            <div class="w-full sm:w-1/6">
+                                <h3 class="font-bold text-gray-800">Quantity: {{ item.count }}</h3>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+    </section>
+} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@if (allOrdersData != null && allOrdersData.length > 0) {
+    @let latestOrder = allOrdersData[allOrdersData.length - 1];
+
+    <section class="bg-slate-100 w-10/12 md:mx-auto mt-20 p-6 my-6 rounded-lg">
+
+        <div class="p-7">
+            <div class="flex justify-between">
+                <h1 class="font-black text-3xl">Thank You For Your Purchase!</h1>
+                <button [routerLink]="'/home'" type="button"
+                    class="px-5 py-2 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Home
+                </button>
+            </div>
+        </div>
+
+        <div class="container w-[90%] py-6 mx-auto">
+            <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+
+                <!-- <h2 class="font-bold text-xl text-gray-800">Order ID: {{ latestOrder._id }}</h2> -->
+                <h3 class="text-lg text-gray-600">Total Price: <span class="text-main">{{ latestOrder.totalOrderPrice | currency:'GBP' }}</span></h3>
+                <h3 class="text-lg text-gray-600">Order Date: {{ latestOrder.createdAt | date:'medium' }}</h3>
+
+                <div class="border-t border-gray-300 my-4"></div>
+
+                @for (item of latestOrder.cartItems; track item.product._id) {
+                    <div class="flex flex-wrap justify-between items-center py-4">
+                        <div class="w-full sm:w-1/5">
+                            <img [src]="item.product.imageCover" class="w-full object-contain rounded-lg" alt="">
+                        </div>
+
+                        <div class="w-full sm:w-1/2">
+                            <h1 class="font-bold text-lg">{{ item.product.title }}</h1>
+                            <h2 class="text-gray-700 my-2">{{ item.price | currency:'GBP' }}</h2>
+                        </div>
+
+                        <div class="w-full sm:w-1/6">
+                            <h3 class="font-bold text-gray-800">Quantity: {{ item.count }}</h3>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </section>
+} @else {
+    <p class="text-center text-xl font-bold mt-10">No orders found.</p>
+}
