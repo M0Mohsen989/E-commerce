@@ -14,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     //  ,withHashLocation(
     , provideClientHydration(withEventReplay()), 
     provideHttpClient(withFetch())
+    // ,provideHttpClient(withInterceptors([loadingInterceptor]))
     // withInterceptors([loadingInterceptor])
     ,
     importProvidersFrom(BrowserAnimationsModule ,NgxSpinnerModule),
