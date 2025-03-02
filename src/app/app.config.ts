@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
      provideRouter(routes, withViewTransitions())
     //  ,withHashLocation(
     , provideClientHydration(withEventReplay()), 
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()) // دمج الانترسبتور مع الـ HttpClient
     // ,provideHttpClient(withInterceptors([loadingInterceptor]))
     // withInterceptors([loadingInterceptor])
     ,
